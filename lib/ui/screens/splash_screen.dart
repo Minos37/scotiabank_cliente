@@ -37,13 +37,36 @@ class _SplashScreenState extends State<SplashScreen> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
+            Container(
+              width: 120,
+              height: 120,
+              decoration: BoxDecoration(
+                color: Colors.white,
+                shape: BoxShape.circle,
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withValues(alpha: 0.08),
+                    blurRadius: 24,
+                    offset: const Offset(0, 12),
+                  ),
+                ],
+              ),
+              padding: const EdgeInsets.all(16),
+              child: Image.asset(
+                'assets/images/icon_scotiabank.png',
+                fit: BoxFit.contain,
+              ),
+            ),
+            const SizedBox(height: 32),
             Text(
-              'Scotiabank.',
-              style: Theme.of(context).textTheme.displayLarge?.copyWith(
+              'Scotiabank',
+              style: Theme.of(context).textTheme.headlineMedium?.copyWith(
                     color: Colors.red,
+                    fontWeight: FontWeight.bold,
+                    letterSpacing: 1.2,
                   ),
             ),
-            const SizedBox(height: 24),
+            const SizedBox(height: 48),
             const CircularProgressIndicator(
               valueColor: AlwaysStoppedAnimation<Color>(Colors.red),
             ),

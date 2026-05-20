@@ -69,23 +69,25 @@ class _LoginScreenState extends State<LoginScreen> {
 
                     const SizedBox(height: 48),
 
-                    // Avatar con inicial
+                    // Logo Scotiabank
                     Container(
-                      width: 80,
-                      height: 80,
-                      decoration: const BoxDecoration(
-                        color: Colors.red,
+                      width: 90,
+                      height: 90,
+                      decoration: BoxDecoration(
+                        color: Colors.white,
                         shape: BoxShape.circle,
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black.withValues(alpha: 0.08),
+                            blurRadius: 16,
+                            offset: const Offset(0, 8),
+                          ),
+                        ],
                       ),
-                      child: Center(
-                        child: Text(
-                          'S',
-                          style:
-                              Theme.of(context).textTheme.displaySmall?.copyWith(
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                        ),
+                      padding: const EdgeInsets.all(12),
+                      child: Image.asset(
+                        'assets/images/icon_scotiabank.png',
+                        fit: BoxFit.contain,
                       ),
                     ),
 
