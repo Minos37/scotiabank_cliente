@@ -10,6 +10,7 @@ import '../ui/screens/operaciones_screen.dart';
 import '../ui/screens/notificaciones_screen.dart';
 import '../ui/screens/contacto_screen.dart';
 import '../ui/screens/perfil_screen.dart';
+import '../ui/screens/datos_personales_screen.dart';
 
 class AppNavigator {
   static Route<dynamic> generateRoute(RouteSettings settings) {
@@ -28,12 +29,18 @@ class AppNavigator {
         return MaterialPageRoute(builder: (_) => const PrestamoScreen());
       case '/operaciones':
         return MaterialPageRoute(builder: (_) => const OperacionesScreen());
+      case '/mi-lista':
+        return MaterialPageRoute(builder: (_) => const Scaffold(body: Center(child: Text('Sección Mi Lista'))));
+      case '/plin':
+        return MaterialPageRoute(builder: (_) => const Scaffold(body: Center(child: Text('Sección Plin'))));
       case '/notificaciones':
         return MaterialPageRoute(builder: (_) => const NotificacionesScreen());
       case '/contacto':
         return MaterialPageRoute(builder: (_) => const ContactoScreen());
       case '/perfil':
         return MaterialPageRoute(builder: (_) => const PerfilScreen());
+      case '/datos-personales':
+        return MaterialPageRoute(builder: (_) => const DatosPersonalesScreen());
       default:
         return MaterialPageRoute(builder: (_) => const SplashScreen());
     }

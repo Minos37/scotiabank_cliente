@@ -87,13 +87,16 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
           ),
           // Botón QR
-          Container(
-            padding: const EdgeInsets.all(8),
-            decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              border: Border.all(color: Colors.grey.shade300),
+          InkWell(
+            onTap: () => Navigator.pushNamed(context, '/plin'),
+            child: Container(
+              padding: const EdgeInsets.all(8),
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                border: Border.all(color: Colors.grey.shade300),
+              ),
+              child: const Icon(Icons.qr_code_scanner, size: 20, color: Colors.black87),
             ),
-            child: const Icon(Icons.qr_code_scanner, size: 20, color: Colors.black87),
           ),
         ],
       ),
@@ -158,46 +161,50 @@ class _HomeScreenState extends State<HomeScreen> {
       padding: const EdgeInsets.all(16.0),
       child: Column(
         children: [
-          _buildProductCard("Cuenta Sueldo", subtitle: "S/ 2,450.00"),
-          _buildProductCard("Cuenta Digital", subtitle: "S/ 820.50"),
-          _buildProductCard("Mis tarjetas", icon: Icons.credit_card, iconColor: Colors.red),
-          _buildProductCard("Adquirir productos", icon: Icons.storefront, iconColor: Colors.purple),
+          _buildProductCard("Cuenta Sueldo", subtitle: "S/ 2,450.00", onTap: () => Navigator.pushNamed(context, '/cuenta')),
+          _buildProductCard("Cuenta Digital", subtitle: "S/ 820.50", onTap: () => Navigator.pushNamed(context, '/cuenta')),
+          _buildProductCard("Mis tarjetas", icon: Icons.credit_card, iconColor: Colors.red, onTap: () => Navigator.pushNamed(context, '/tarjeta')),
+          _buildProductCard("Adquirir productos", icon: Icons.storefront, iconColor: Colors.purple, onTap: () => Navigator.pushNamed(context, '/operaciones')),
         ],
       ),
     );
   }
 
-  Widget _buildProductCard(String title, {String? subtitle, IconData? icon, Color? iconColor}) {
-    return Container(
-      margin: const EdgeInsets.only(bottom: 12),
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(16),
-        boxShadow: [
-          BoxShadow(color: Colors.black.withOpacity(0.04), blurRadius: 10, offset: const Offset(0, 4)),
-        ],
-      ),
-      child: Row(
-        children: [
-          if (icon != null) ...[
-            Icon(icon, color: iconColor, size: 24),
-            const SizedBox(width: 16),
+  Widget _buildProductCard(String title, {String? subtitle, IconData? icon, Color? iconColor, VoidCallback? onTap}) {
+    return InkWell(
+      onTap: onTap,
+      borderRadius: BorderRadius.circular(16),
+      child: Container(
+        margin: const EdgeInsets.only(bottom: 12),
+        padding: const EdgeInsets.all(16),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(16),
+          boxShadow: [
+            BoxShadow(color: Colors.black.withOpacity(0.04), blurRadius: 10, offset: const Offset(0, 4)),
           ],
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(title, style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 15)),
-                if (subtitle != null) ...[
-                  const SizedBox(height: 4),
-                  Text(subtitle, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
+        ),
+        child: Row(
+          children: [
+            if (icon != null) ...[
+              Icon(icon, color: iconColor, size: 24),
+              const SizedBox(width: 16),
+            ],
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(title, style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 15)),
+                  if (subtitle != null) ...[
+                    const SizedBox(height: 4),
+                    Text(subtitle, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
+                  ],
                 ],
-              ],
+              ),
             ),
-          ),
-          const Icon(Icons.chevron_right, color: Colors.blue, size: 20),
-        ],
+            const Icon(Icons.chevron_right, color: Colors.blue, size: 20),
+          ],
+        ),
       ),
     );
   }
@@ -289,6 +296,24 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget _buildBottomNavBar() {
     return BottomNavigationBar(
       currentIndex: 0,
+      onTap: (index) {
+        if (index == 0) return;
+        
+        switch (index) {
+          case 1:
+            Navigator.pushReplacementNamed(context, '/mi-lista');
+            break;
+          case 2:
+            Navigator.pushReplacementNamed(context, '/plin');
+            break;
+          case 3:
+            Navigator.pushReplacementNamed(context, '/notificaciones');
+            break;
+          case 4:
+            Navigator.pushReplacementNamed(context, '/perfil');
+            break;
+        }
+      },
       type: BottomNavigationBarType.fixed,
       backgroundColor: Colors.white,
       selectedItemColor: const Color(0xFFEC111A),
@@ -296,10 +321,10 @@ class _HomeScreenState extends State<HomeScreen> {
       selectedLabelStyle: const TextStyle(fontWeight: FontWeight.bold, fontSize: 12),
       items: const [
         BottomNavigationBarItem(icon: Icon(Icons.home_outlined), activeIcon: Icon(Icons.home), label: 'Inicio'),
-        BottomNavigationBarItem(icon: Icon(Icons.list_alt), label: 'Mi Lista'),
-        BottomNavigationBarItem(icon: Icon(Icons.monetization_on_outlined), label: 'Plin'),
-        BottomNavigationBarItem(icon: Icon(Icons.notifications_none), label: 'Avisos'),
-        BottomNavigationBarItem(icon: Icon(Icons.person_outline), label: 'Mi Cuenta'),
+        BottomNavigationBarItem(icon: Icon(Icons.list_alt_outlined), label: 'Mi Lista'),
+        BottomNavigationBarItem(icon: Icon(Icons.qr_code_scanner), label: 'Plin'),
+        BottomNavigationBarItem(icon: Icon(Icons.notifications_none_outlined), label: 'Notificaciones'),
+        BottomNavigationBarItem(icon: Icon(Icons.person_outline), activeIcon: Icon(Icons.person), label: 'Mi Cuenta'),
       ],
     );
   }
