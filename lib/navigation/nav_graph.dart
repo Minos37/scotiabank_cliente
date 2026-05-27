@@ -9,6 +9,8 @@ import '../ui/screens/prestamo_screen.dart';
 import '../ui/screens/operaciones_screen.dart';
 import '../ui/screens/notificaciones_screen.dart';
 import '../ui/screens/contacto_screen.dart';
+import '../ui/screens/mi_lista_screen.dart';
+import '../ui/screens/plin_screen.dart';
 import '../ui/screens/perfil_screen.dart';
 import '../ui/screens/datos_personales_screen.dart';
 
@@ -30,9 +32,9 @@ class AppNavigator {
       case '/operaciones':
         return MaterialPageRoute(builder: (_) => const OperacionesScreen());
       case '/mi-lista':
-        return MaterialPageRoute(builder: (_) => const Scaffold(body: Center(child: Text('Sección Mi Lista'))));
+        return MaterialPageRoute(builder: (_) => const MiListaScreen());
       case '/plin':
-        return MaterialPageRoute(builder: (_) => const Scaffold(body: Center(child: Text('Sección Plin'))));
+        return MaterialPageRoute(builder: (_) => const PlinScreen());
       case '/notificaciones':
         return MaterialPageRoute(builder: (_) => const NotificacionesScreen());
       case '/contacto':
