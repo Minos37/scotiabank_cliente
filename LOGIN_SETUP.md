@@ -1,13 +1,6 @@
-# Guía de Configuración del Login con Supabase
+# Guía de Configuración del Login con Supabase ## Resumen de Cambios Se ha integrado completamente Supabase con el flujo de autenticación de la app. Los cambios incluyen: ### Archivos Actualizados 1. **pubspec.yaml** Agregadas dependencias: `supabase_flutter`, `provider`, `http`
 
-## Resumen de Cambios
-
-Se ha integrado completamente Supabase con el flujo de autenticación de la app. Los cambios incluyen:
-
-### Archivos Actualizados
-
-1. **pubspec.yaml**
-   - Agregadas dependencias: `supabase_flutter`, `provider`, `http`
+Pilar 
 
 2. **lib/main.dart**
    - Inicialización de Supabase antes de ejecutar la app

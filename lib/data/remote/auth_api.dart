@@ -40,4 +40,16 @@ class AuthApi {
       throw Exception('Error refreshing token: $e');
     }
   }
+
+  /// Simulación de actualización de perfil de usuario
+  Future<bool> updateProfile(String userId, Map<String, dynamic> data) async {
+    try {
+      // Simulamos latencia de red
+      await Future.delayed(const Duration(seconds: 1));
+      // En una implementación real con Supabase, usarías supabase.from('users').update(data).eq('id', userId)
+      return true;
+    } catch (e) {
+      throw Exception('Error actualizando perfil: $e');
+    }
+  }
 }

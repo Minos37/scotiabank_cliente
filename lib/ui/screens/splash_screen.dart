@@ -61,14 +61,14 @@ class _SplashScreenState extends State<SplashScreen> {
             Text(
               'Scotiabank',
               style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-                    color: Colors.red,
+                    color: const Color(0xFFEC111A),
                     fontWeight: FontWeight.bold,
                     letterSpacing: 1.2,
                   ),
             ),
             const SizedBox(height: 48),
             const CircularProgressIndicator(
-              valueColor: AlwaysStoppedAnimation<Color>(Colors.red),
+              valueColor: AlwaysStoppedAnimation<Color>(Color(0xFFEC111A)),
             ),
           ],
         ),

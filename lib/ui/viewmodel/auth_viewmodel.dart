@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import '../../data/model/auth_models.dart';
 import '../../data/local/auth_service.dart';
+import '../../data/remote/auth_api.dart';
 import 'ui_state.dart';
 
 class AuthViewModel extends ChangeNotifier {
   UiState _state = const UiEmpty();
   String? _userId;
   String? _userEmail;
+  final _authApi = AuthApi();
 
   UiState get state => _state;
   String? get userId => _userId;
@@ -73,6 +75,34 @@ class AuthViewModel extends ChangeNotifier {
     } catch (e) {
       _state = UiError(e.toString());
       notifyListeners();
+    }
+  }
+
+  Future<bool> updateProfile(Map<String, dynamic> data) async {
+    if (_userId == null) return false;
+    
+    try {
+      final success = await _authApi.updateProfile(_userId!, data);
+      if (success) {
+        if (data.containsKey('correo') || data.containsKey('email')) {
+          _userEmail = data['correo'] ?? data['email'];
+
+          // Sincronizar el objeto AuthResponse dentro del estado UiSuccess
+          if (_state is UiSuccess) {
+            final currentResponse = (_state as UiSuccess).data as AuthResponse;
+            _state = UiSuccess(AuthResponse(
+              id: currentResponse.id,
+              usuario: _userEmail?.split('@')[0] ?? currentResponse.usuario,
+              token: currentResponse.token,
+              email: _userEmail ?? currentResponse.email,
+            ));
+          }
+        }
+        notifyListeners();
+      }
+      return success;
+    } catch (e) {
+      return false;
     }
   }
 

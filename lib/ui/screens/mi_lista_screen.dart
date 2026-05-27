@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-class NotificacionesScreen extends StatelessWidget {
-  const NotificacionesScreen({super.key});
+class MiListaScreen extends StatelessWidget {
+  const MiListaScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -25,32 +25,33 @@ class NotificacionesScreen extends StatelessWidget {
                   style: Theme.of(context).textTheme.titleLarge?.copyWith(
                         color: const Color(0xFFEC111A),
                         fontWeight: FontWeight.bold,
+                        letterSpacing: -0.5,
                       ),
                 ),
               ),
               const SizedBox(height: 24),
               const Text(
-                'Notificaciones',
-                style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+                'Mi Lista',
+                style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
               ),
-              const SizedBox(height: 20),
-              _buildNotificationItem(
-                '¡Bienvenido!',
-                'Gracias por usar la nueva app de Scotiabank.',
-                'Hace 2 horas',
-              ),
-              _buildNotificationItem(
-                'Transferencia recibida',
-                'Has recibido una transferencia de S/ 150.00.',
-                'Ayer',
+              const SizedBox(height: 100),
+              const Center(
+                child: Column(
+                  children: [
+                    Icon(Icons.list_alt_outlined, size: 80, color: Colors.grey),
+                    SizedBox(height: 16),
+                    Text('Aún no tienes elementos en tu lista', 
+                      style: TextStyle(color: Colors.grey, fontSize: 16)),
+                  ],
+                ),
               ),
             ],
           ),
         ),
         bottomNavigationBar: BottomNavigationBar(
-          currentIndex: 3,
+          currentIndex: 1,
           onTap: (index) {
-            if (index == 3) return;
+            if (index == 1) return;
             _handleNavigation(context, index);
           },
           type: BottomNavigationBarType.fixed,
@@ -68,30 +69,11 @@ class NotificacionesScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildNotificationItem(String title, String body, String time) {
-    return Card(
-      elevation: 0,
-      margin: const EdgeInsets.only(bottom: 12),
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-      child: ListTile(
-        title: Text(title, style: const TextStyle(fontWeight: FontWeight.bold)),
-        subtitle: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(body),
-            const SizedBox(height: 4),
-            Text(time, style: const TextStyle(fontSize: 12, color: Colors.grey)),
-          ],
-        ),
-      ),
-    );
-  }
-
   void _handleNavigation(BuildContext context, int index) {
     switch (index) {
       case 0: Navigator.pushReplacementNamed(context, '/home'); break;
-      case 1: Navigator.pushReplacementNamed(context, '/mi-lista'); break;
       case 2: Navigator.pushReplacementNamed(context, '/plin'); break;
+      case 3: Navigator.pushReplacementNamed(context, '/notificaciones'); break;
       case 4: Navigator.pushReplacementNamed(context, '/perfil'); break;
     }
   }

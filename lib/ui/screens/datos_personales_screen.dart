@@ -1,16 +1,82 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import '../viewmodel/auth_viewmodel.dart';
+import '../viewmodel/ui_state.dart';
 
 class DatosPersonalesScreen extends StatelessWidget {
   const DatosPersonalesScreen({super.key});
 
-  void _showEditMessage(BuildContext context, String field) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text('La edición de $field estará disponible pronto')),
+  void _showEditDialog(BuildContext context, String field, String currentValue) {
+    final TextEditingController controller = TextEditingController(text: currentValue);
+    final authViewModel = Provider.of<AuthViewModel>(context, listen: false);
+    
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+      ),
+      builder: (context) => Padding(
+        padding: EdgeInsets.only(
+          bottom: MediaQuery.of(context).viewInsets.bottom,
+          left: 20,
+          right: 20,
+          top: 20,
+        ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text('Editar $field', style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+            const SizedBox(height: 16),
+            TextField(
+              controller: controller,
+              decoration: InputDecoration(
+                labelText: 'Nuevo $field',
+                border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
+              ),
+            ),
+            const SizedBox(height: 20),
+            SizedBox(
+              width: double.infinity,
+              child: ElevatedButton(
+                style: ElevatedButton.styleFrom(backgroundColor: const Color(0xFFEC111A)),
+                onPressed: () async {
+                  // Normalizamos el campo para que el ViewModel lo reconozca (snake_case)
+                  final String key = field.toLowerCase().contains('correo') 
+                      ? 'email' 
+                      : field.toLowerCase().replaceAll(' ', '_');
+                  
+                  final success = await authViewModel.updateProfile({
+                    key: controller.text,
+                  });
+                  
+                  if (context.mounted) {
+                    Navigator.pop(context);
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text(success 
+                          ? '$field actualizado correctamente' 
+                          : 'Error al actualizar $field'),
+                      ),
+                    );
+                  }
+                },
+                child: const Text('Guardar cambios', style: TextStyle(color: Colors.white)),
+              ),
+            ),
+            const SizedBox(height: 20),
+          ],
+        ),
+      ),
     );
   }
 
   @override
   Widget build(BuildContext context) {
+    final authViewModel = Provider.of<AuthViewModel>(context);
+    final userEmail = authViewModel.userEmail ?? "No disponible";
+
     return Scaffold(
       backgroundColor: const Color(0xFFF5F5F5),
       appBar: AppBar(
@@ -43,13 +109,13 @@ class DatosPersonalesScreen extends StatelessWidget {
                   size: 18,
                 ),
                 const SizedBox(width: 8),
-                const Text(
-                  'ho**@gmail.com',
-                  style: TextStyle(fontSize: 15, color: Colors.black87),
+                Text(
+                  userEmail,
+                  style: const TextStyle(fontSize: 15, color: Colors.black87),
                 ),
               ],
             ),
-            onEdit: () => _showEditMessage(context, 'correo'),
+            onEdit: () => _showEditDialog(context, 'Correo', userEmail),
           ),
           _buildDataCard(
             title: 'Número de celular',
@@ -57,7 +123,7 @@ class DatosPersonalesScreen extends StatelessWidget {
               '******321',
               style: TextStyle(fontSize: 15, color: Colors.black87),
             ),
-            onEdit: () => _showEditMessage(context, 'celular'),
+            onEdit: () => _showEditDialog(context, 'Número de celular', '******321'),
           ),
           _buildDataCard(
             title: 'Dirección de domicilio',
@@ -69,7 +135,7 @@ class DatosPersonalesScreen extends StatelessWidget {
                 height: 1.4,
               ),
             ),
-            onEdit: () => _showEditMessage(context, 'dirección'),
+            onEdit: () => _showEditDialog(context, 'Dirección', 'Ca. Agustin Gamarra...'),
           ),
           _buildDataCard(
             title: 'Ocupación principal',
@@ -77,7 +143,7 @@ class DatosPersonalesScreen extends StatelessWidget {
               'Trabajo para una empresa, como Ingeniero.',
               style: TextStyle(fontSize: 15, color: Colors.black87),
             ),
-            onEdit: () => _showEditMessage(context, 'ocupación'),
+            onEdit: () => _showEditDialog(context, 'Ocupación', 'Ingeniero'),
           ),
           const SizedBox(height: 24),
           // Sección de última actualización en la parte inferior
